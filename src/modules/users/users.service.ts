@@ -1,28 +1,34 @@
-import { User } from "../../core/database/documents/user/user.model";
-import {InjectModel} from '@nestjs/sequelize';
-import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import { User } from '../../core/database/documents/user/user.model';
+import { InjectModel } from '@nestjs/sequelize';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { ERROR_USER_NOT_FOUND } from './users.constant';
-import { CreateUserDto } from "./dto";
-import { genSalt, hash } from "bcryptjs";
+import { CreateUserDto } from './dto';
+import { genSalt, hash } from 'bcryptjs';
 
 export class UsersService {
   constructor(
     @InjectModel(User)
-    private readonly userModel: typeof User,
-
+    private readonly userModel: typeof User
   ) {
   }
 
-  async fetchListAllUsers(){
+  async deleteUserById(id: number) {
+    return await this.userModel.destroy({
+      where: { id }
+    });
+  }
+
+  async fetchListAllUsers() {
     const data = await this.userModel.findAll({
-      attributes: {exclude: ['password']},
+      attributes: { exclude: ['password'] },
       raw: true
     });
     return data;
   }
-  async fetchIdByEmail(email:string): Promise<number>{
-    const data:User | null = await this.findByEmail(email);
-    if (data!=null){
+
+  async fetchIdByEmail(email: string): Promise<number> {
+    const data: User | null = await this.findByEmail(email);
+    if (data != null) {
       return data.id;
     }
     else {
