@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  app:
+    build: ./
+    container_name: app_doc
+    command: [ "npm", "run", "start:prod" ]
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - ${REST_PORT}:${REST_PORT}
+    networks:
+      - backend
+
+  db:
+    container_name: document_db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_HOST: '%'
+    env_file:
+      - ./.env
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    expose:
+      - ${DB_PORT}
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: app_network
+    driver: bridge
+
