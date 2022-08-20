@@ -1,5 +1,4 @@
-FROM node:16.8
-
+FROM node:16.8-alpine
 WORKDIR /
 
 RUN npm install -g npm@8.17.0
