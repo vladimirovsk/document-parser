@@ -1,4 +1,4 @@
-FROM node:16.8-alpine
+FROM node:16.8
 
 WORKDIR /
 
@@ -16,4 +16,3 @@ COPY . .
 RUN npm run build
 RUN npm prune --production
 
-CMD ["/bin/bash"]

@@ -25,7 +25,10 @@ export class ReportService {
     const resultData:{}[] = [];
     for(const row of sourceList){
       const fetchDataSource = await this.fetchReportBySource(email, row.id);
-      resultData.push({[row.name]:fetchDataSource})
+      resultData.push({
+        source:row.name,
+        data:fetchDataSource
+      })
     }
 
     return resultData;
@@ -37,7 +40,7 @@ export class ReportService {
 
     return await this.reportModel.findAll({
       attributes:[
-        [sequelize.fn('CONCAT', sequelize.col('month'), '-',sequelize.col('year')), 'period'],
+        [sequelize.fn('CONCAT', sequelize.col('month'), '-',sequelize.col('year')), 'date'],
         [sequelize.fn('SUM', sequelize.col('sum')), 'total'],
       ],
       group: ['month', 'year'],

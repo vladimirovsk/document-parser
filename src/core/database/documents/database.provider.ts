@@ -4,7 +4,7 @@ import {SEQUELIZE_DOCUMENTS} from '../../constants';
 import {ArrDataBasesModel} from './database.models';
 import {Logger} from '@nestjs/common';
 
-const logger = new Logger('stockDatabaseProviders');
+const logger = new Logger('DatabaseProviders');
 
 export const documentDatabaseProviders = [{
 	provide: SEQUELIZE_DOCUMENTS,
